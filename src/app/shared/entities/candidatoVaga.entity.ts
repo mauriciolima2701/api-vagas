@@ -1,5 +1,5 @@
-import { Entity } from 'typeorm';
-import { EntityBase } from './entity.base';
+import { Entity } from "typeorm";
+import { EntityBase } from "./entity.base";
 
-@Entity()
+@Entity("candidato_vaga")
 export class candidatoVagaEntity extends EntityBase {}

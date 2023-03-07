@@ -1,32 +1,30 @@
-import {
-    Entity,
-    PrimaryColumn,
-    CreateDateColumn,
-    UpdateDateColumn,
-    BeforeInsert,
-    BeforeUpdate,
-} from 'typeorm';
-import { v4 } from 'uuid';
+import { Entity, PrimaryColumn, CreateDateColumn, UpdateDateColumn, BeforeInsert, BeforeUpdate, Column } from "typeorm";
+import { v4 } from "uuid";
 
-@Entity()
 export abstract class EntityBase {
-    @PrimaryColumn()
-    id!: string;
+  @PrimaryColumn()
+  id!: string;
 
-    @CreateDateColumn('created_at')
-    createdAt!: Date;
+  @Column({
+    name: "created_at",
+    type: "timestamp",
+  })
+  createdAt!: Date;
 
-    @UpdateDateColumn('updated_at')
-    updatedAt?: Date;
+  @Column({
+    name: "updated_at",
+    type: "timestamp",
+  })
+  updatedAt?: Date;
 
-    @BeforeInsert()
-    beforeCreate() {
-        this.createdAt = new Date();
-        this.updatedAt = new Date();
-    }
+  @BeforeInsert()
+  beforeCreate() {
+    this.createdAt = new Date();
+    this.updatedAt = new Date();
+  }
 
-    @BeforeUpdate()
-    beforeUpdate() {
-        this.updatedAt = new Date();
-    }
+  @BeforeUpdate()
+  beforeUpdate() {
+    this.updatedAt = new Date();
+  }
 }
