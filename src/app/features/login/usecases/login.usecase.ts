@@ -1,5 +1,6 @@
 import { CriptoService } from "../../../shared/services/cripto.service";
 import { UsuarioRepository } from "../../usuario/repositories/usuario.repository";
+import * as jwt from "jsonwebtoken";
 
 export interface LoginDto {
   username: string;
@@ -41,11 +42,21 @@ export class LoginUseCase {
       };
     }
 
+    const token = jwt.sign(
+      {
+        uuid: usuario.id,
+        tipo: usuario.tipo,
+      },
+      "senha123",
+      {
+        expiresIn: "1h",
+      }
+    );
+
     return {
       sucesso: true,
       mensagem: "OK",
-      uuid: usuario.id,
-      token: "", // ??
+      token,
     };
   }
 }
