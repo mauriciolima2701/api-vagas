@@ -5,13 +5,13 @@ export abstract class EntityBase {
   @PrimaryColumn()
   id!: string;
 
-  @Column({
+  @CreateDateColumn({
     name: "created_at",
     type: "timestamp",
   })
   createdAt!: Date;
 
-  @Column({
+  @UpdateDateColumn({
     name: "updated_at",
     type: "timestamp",
   })
