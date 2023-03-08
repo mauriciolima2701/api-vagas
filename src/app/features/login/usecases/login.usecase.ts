@@ -1,6 +1,7 @@
 import { CriptoService } from "../../../shared/services/cripto.service";
 import { UsuarioRepository } from "../../usuario/repositories/usuario.repository";
 import * as jwt from "jsonwebtoken";
+import { appEnv } from "../../../envs/app.env";
 
 export interface LoginDto {
   username: string;
@@ -47,7 +48,7 @@ export class LoginUseCase {
         uuid: usuario.id,
         tipo: usuario.tipo,
       },
-      "senha123",
+      appEnv.secret!,
       {
         expiresIn: "1h",
       }

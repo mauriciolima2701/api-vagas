@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { HttpHelper } from "../util/http.helper";
 import * as jwt from "jsonwebtoken";
+import { appEnv } from "../../envs/app.env";
 
 export function authorizationMiddleware(req: any, res: Response, next: NextFunction) {
   const { authorization } = req.headers;
@@ -14,7 +15,7 @@ export function authorizationMiddleware(req: any, res: Response, next: NextFunct
 
   // decodificar o token
   try {
-    const decoded = jwt.verify(token, "senha123");
+    const decoded = jwt.verify(token, appEnv.secret!);
     req.user = decoded;
   } catch (error) {
     console.log(error);
