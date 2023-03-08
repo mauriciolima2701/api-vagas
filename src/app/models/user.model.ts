@@ -7,12 +7,12 @@ export enum TipoUser {
 }
 
 export class User {
-    private _id: string;
     constructor(
+        private _id: string,
         private _nome: string,
         private _username: string,
         private _senha: string,
-        private _tipo: TipoUser,
+        private _tipo: string, //TipoUser,
         private _nomeEmpresa?: string
     ) {
         this._id = v4();
@@ -23,6 +23,9 @@ export class User {
     }
     public get nome() {
         return this._nome;
+    }
+    public get senha() {
+        return this._senha;
     }
 
     public get username() {
@@ -36,13 +39,14 @@ export class User {
     }
 
     public static create(
+        id: string,
         nome: string,
         username: string,
         senha: string,
-        tipo: TipoUser,
+        tipo: string, //TipoUser,
         nomeEmpresa?: string
     ) {
-        const user = new User(nome, username, senha, tipo, nomeEmpresa);
+        const user = new User(id, nome, username, senha, tipo, nomeEmpresa);
 
         return user;
     }
