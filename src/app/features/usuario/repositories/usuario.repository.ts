@@ -19,12 +19,25 @@ export class UsuarioRepository {
         return this.mapEntityToModel(result);
     }
 
-    public async obtemPorUserName(username: string): Promise<UserEntity | null> {
-        return await this._repository.findOne({
-            where: {
-                username,
-            },
+    public async obtemPorUserName(username: string) {
+        const result = await this._repository.findOneBy({
+            username,
         });
+
+        if (!result) {
+            return null;
+        }
+
+        return this.mapEntityToModel(result);
+    }
+    public async getAll() {
+        const result = await this._repository.find();
+
+        if (!result) {
+            return null;
+        }
+
+        return result.map((user) => this.mapEntityToModel(user));
     }
 
     private mapEntityToModel(entity: UserEntity) {
