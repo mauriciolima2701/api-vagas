@@ -2,7 +2,7 @@ import { Entity, Column } from "typeorm";
 import { EntityBase } from "./entity.base";
 import { TipoUser } from "../../models/user.model";
 
-@Entity("user")
+@Entity({ name: "user" })
 export class UserEntity extends EntityBase {
   @Column()
   username!: string;
