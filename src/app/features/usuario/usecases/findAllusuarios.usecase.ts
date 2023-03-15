@@ -1,15 +1,26 @@
-import { UsuarioRepository } from '../repositories/usuario.repository';
+import { CacheRepository } from "../../../shared/database/repositories/cache.repository";
+import { UsuarioRepository } from "../repositories/usuario.repository";
 
 export class FindAllUsuarioUseCase {
-    constructor(private repository: UsuarioRepository) {}
+  constructor(private repository: UsuarioRepository) {}
 
-    public async execute() {
-        const result = await this.repository.getAll();
+  public async execute() {
+    const cacheRepository = new CacheRepository();
 
-        if (!result) {
-            return null;
-        }
+    const cache = await cacheRepository.get("LIST_USERS");
 
-        return result;
+    if (cache) {
+      return cache;
     }
+
+    const result = await this.repository.getAll();
+
+    if (!result) {
+      return null;
+    }
+
+    await cacheRepository.setEX("LIST_USERS", result, 60);
+
+    return result;
+  }
 }
