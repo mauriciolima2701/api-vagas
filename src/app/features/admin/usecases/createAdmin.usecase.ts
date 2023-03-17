@@ -15,11 +15,16 @@ export class CreateAdminUseCase {
 	public async execute(data: CreatedAdminDTO) {
 		const admin = new Admin(data.nome, data.username, data.senha);
 
-		// const cacheRepository = new CacheRepository();
-		// await cacheRepository.del("LIST_USERS");
+		const cacheRepository = new CacheRepository();
+
+		const cache: any[] = (await cacheRepository.get("LIST_ADMINS")) ?? [];
+
+		await cacheRepository.set("LIST_ADMINS", [...cache, admin]);
 
 		const result = await this.repository.criaUsuario(admin);
+
 		if (!result) throw new Error("User not created!");
+
 		return admin.toJsonAdmin();
 	}
 }

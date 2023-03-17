@@ -1,17 +1,24 @@
-import { badRequestError } from "./../../../shared/util/http.helper";
 import { NextFunction, Request, Response } from "express";
-import { serverError } from "../../../shared/util/http.helper";
+import { HttpHelper } from "../../../shared/util/http.helper";
 
-export const createRecrutadorValidator = (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const { nomeEmpresa } = req.body;
+export const createRecrutadorValidator = (
+	req: Request,
+	res: Response,
+	next: NextFunction
+) => {
+	try {
+		const { nomeEmpresa, tipo } = req.body;
 
-        if (!nomeEmpresa) {
-            return badRequestError(res, "Nome da empresa não foi informado");
-        }
+		if (!tipo) {
+			return HttpHelper.badRequest(res, "Tipo não foi informado");
+		}
 
-        next();
-    } catch (error: any) {
-        return serverError(res, error.toString());
-    }
+		if (!nomeEmpresa) {
+			return HttpHelper.badRequest(res, "Nome da empresa não foi informado");
+		}
+
+		next();
+	} catch (error: any) {
+		return HttpHelper.serverError(res, error.toString());
+	}
 };
