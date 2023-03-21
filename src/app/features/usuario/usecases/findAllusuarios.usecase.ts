@@ -7,9 +7,11 @@ export class FindAllUsuarioUseCase {
   public async execute() {
     const cacheRepository = new CacheRepository();
 
-    const cache = await cacheRepository.get("LIST_USERS");
+    const cache = JSON.parse(await cacheRepository.get("LIST_USERS"));
 
     if (cache) {
+      console.table(cache);
+
       return cache;
     }
 
@@ -19,8 +21,8 @@ export class FindAllUsuarioUseCase {
       return null;
     }
 
-    await cacheRepository.setEX("LIST_USERS", result, 60);
-
+    await cacheRepository.setEX("LIST_USERS", JSON.stringify(result), 60);
+    console.table(result);
     return result;
   }
 }

@@ -5,37 +5,37 @@ import { HttpHelper } from "../../../shared/util/http.helper";
 import { UsuarioRepository } from "../../usuario/repositories/usuario.repository";
 
 interface CreateRecruiterDTO {
-	username: string;
-	senha: string;
-	nome: string;
-	nomeEmpresa: string;
-	tipo: TipoUser;
+  username: string;
+  senha: string;
+  nome: string;
+  nomeEmpresa: string;
+  tipo: TipoUser;
 }
 
 export class CreateRecruiterUseCase {
-	constructor(private repository: UsuarioRepository) {}
+  constructor(private repository: UsuarioRepository) {}
 
-	public async execute(data: CreateRecruiterDTO) {
-		const { username, senha, nome, nomeEmpresa } = data;
+  public async execute(data: CreateRecruiterDTO) {
+    const { username, senha, nome, nomeEmpresa } = data;
 
-		const recruiter = new Recrutador(
-			username,
-			senha,
-			nome,
-			nomeEmpresa,
-			"R" as TipoUser
-		);
+    const recruiter = new Recrutador(
+      nome,
+      username,
+      senha,
+      nomeEmpresa,
+      "R" as TipoUser
+    );
 
-		const cacheRepository = new CacheRepository();
+    const cacheRepository = new CacheRepository();
 
-		const cache: any[] = (await cacheRepository.get("LIST_RECRUITERS")) ?? [];
+    const cache: any[] = (await cacheRepository.get("LIST_RECRUITERS")) ?? [];
 
-		await cacheRepository.set("LIST_RECRUITERS", [...cache, recruiter]);
+    // await cacheRepository.set("LIST_RECRUITERS", [...cache, recruiter]);
 
-		const result = await this.repository.criaUsuario(recruiter);
+    const result = await this.repository.criaUsuario(recruiter);
 
-		if (!result) throw new Error("User not created!");
+    if (!result) throw new Error("User not created!");
 
-		return recruiter.toJson();
-	}
+    return recruiter.toJson();
+  }
 }

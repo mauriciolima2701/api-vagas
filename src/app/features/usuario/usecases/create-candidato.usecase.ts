@@ -3,25 +3,25 @@ import { CacheRepository } from "../../../shared/database/repositories/cache.rep
 import { UsuarioRepository } from "../repositories/usuario.repository";
 
 interface CreateCandidatoDTO {
-	username: string;
-	senha: string;
-	nome: string;
+  username: string;
+  senha: string;
+  nome: string;
 }
 
 export class CreateCandidatoUseCase {
-	constructor(private repository: UsuarioRepository) {}
+  constructor(private repository: UsuarioRepository) {}
 
-	public async execute(data: CreateCandidatoDTO) {
-		const candidato = new Candidato(data.nome, data.username, data.senha);
+  public async execute(data: CreateCandidatoDTO) {
+    const candidato = new Candidato(data.nome, data.username, data.senha);
 
-		const cacheRepository = new CacheRepository();
+    const cacheRepository = new CacheRepository();
 
-		const cache: any[] = (await cacheRepository.get("LIST_APPLICANT")) ?? [];
+    const cache: any[] = (await cacheRepository.get("LIST_APPLICANT")) ?? [];
 
-		await cacheRepository.set("LIST_APPLICANT", [...cache, candidato]);
+    await cacheRepository.set("LIST_APPLICANT", [...cache, candidato]);
 
-		const result = await this.repository.criaUsuario(candidato);
+    const result = await this.repository.criaUsuario(candidato);
 
-		return result.toJson();
-	}
+    return result.toJson();
+  }
 }
